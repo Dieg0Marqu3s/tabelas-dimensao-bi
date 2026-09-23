@@ -1,5 +1,7 @@
 let
     // Definindo DataMin e DataMax
+    // 01/01/2025 Definido por padrão.
+
     DataMin = #date(2025, 1, 1),
     DataMax = Date.EndOfMonth(Date.AddMonths(Date.From(DateTime.LocalNow()), 1)),
 
