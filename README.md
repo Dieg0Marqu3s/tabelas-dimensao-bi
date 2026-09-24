@@ -1,44 +1,27 @@
 # Biblioteca de tabelas BI
 
-Consultas reutilizáveis em linguagem M (Power Query) para projetos de Power BI.
+Consultas reutilizáveis em Power Query (linguagem M) para projetos de Power BI.
 
-## Consultas disponíveis
+## Tabelas
 
-| Consulta | Arquivo | Finalidade |
+| Tabela | Arquivo | Fonte/uso |
 | --- | --- | --- |
-| Tabela Calendario | [Calendario.pq](Calendario/Calendario.pq) | Gerar uma linha por dia, com atributos de calendário. |
-| Tabela de Estado | [Estados.pq](Geografia/Estados.pq) | Carregar os dados geográficos incorporados à consulta. |
+| Calendário | `Calendario/Calendario.pq` | Datas e atributos de calendário; início em 01/01/2025 e fim dinâmico. |
+| Estados | `Geografia/Estados.pq` | Estados, UF, capitais e coordenadas; dados incorporados no código. |
+| Municípios | `Geografia/Municipios.pq` | Municípios, códigos IBGE, UF, estado e região; consulta a API do IBGE. |
+| Feriados | `Calendario/Feriados.pq` | Feriados por ano, de 2025 até o ano seguinte; consulta a BrasilAPI. |
+| Períodos | `Periodos/Periodo.pq` | Classificação das 24 horas em período e turno. |
 
 ## Como usar
 
-1. No Power BI Desktop, abra **Transformar dados**.
-2. Crie uma **Consulta em branco** e abra o **Editor Avançado**.
-3. Substitua todo o conteúdo pelo código do arquivo `.pq` desejado, de `let` até a última etapa após `in`.
-4. Nomeie a consulta como **Tabela Calendario** ou **Tabela de Estado**.
-5. Confira os tipos e valores na prévia e selecione **Fechar e Aplicar**.
+1. No Power BI, abra **Transformar dados > Consulta em branco > Editor Avançado**.
+2. Cole o conteúdo de um arquivo `.pq`, do `let` ao `in`.
+3. Confira os tipos e atualize a consulta.
 
-Os arquivos contêm apenas a expressão M. Os rótulos `Tabela Calendario =` e `Tabela de Estado =` do conteúdo fornecido foram separados do código para permitir colá-lo no Editor Avançado. A lógica e os dados incorporados foram preservados.
+Municípios e Feriados usam acesso anônimo à internet e precisam de atualização das credenciais no Power BI Service. Feriados não incluem automaticamente todas as regras estaduais e municipais; revise a aplicabilidade antes de usá-los como dias não úteis.
 
-## Calendário
+## Parâmetros principais
 
-- Início: `DataMin = #date(2025, 1, 1)`; altere esse valor para reutilizar a consulta em outro intervalo.
-- Fim: último dia do mês seguinte à data obtida por `DateTime.LocalNow()` na execução da consulta.
-- Intervalo inclusivo: inclui a data inicial e a final.
-- Colunas: `DATA`, `Dia`, `DIA SEMANA ABREV`, `DIA SEMANA NOME`, `MÊS NUM`, `MÊS NOME`, `MÊS NOME ABREV`, `ANO`, `Dia_Nome`, `Semana do Ano`, `MES_ANO`, `Prefixo`, `Trimestre`, `InicioMes`.
-- Nomes de dias e meses não têm cultura explícita nas chamadas originais de formatação. Confira o resultado no ambiente de destino.
-- `Date.WeekOfYear` foi preservado sem argumento de primeiro dia da semana; o código não define uma regra ISO explicitamente.
-- O limite final é recalculado na execução da consulta; não é um valor fixo gravado no repositório.
-
-## Estados
-
-- Colunas: `ESTADO`, `UF`, `CAPITAL`, `LATITUDE`, `LONGITUDE`, `PAIS`, `ESTADO_UF`.
-- A origem é um JSON incorporado, codificado em Base64 e comprimido com Deflate. Não depende de arquivo externo.
-- `LATITUDE` e `LONGITUDE` são convertidas em número e arredondadas para seis casas decimais.
-- A conversão numérica foi preservada sem cultura explícita. Confira os separadores decimais no ambiente de destino.
-- Os dados são os fornecidos pelo autor; sua fonte geográfica original não foi informada.
-
-## Reutilização e manutenção
-
-Copiar uma consulta cria uma versão independente no projeto de destino. Alterações neste repositório não atualizam automaticamente os códigos já copiados para outros projetos.
-
-Esta versão inicial não foi executada em um mecanismo Power Query nesta sessão. Valide a atualização das consultas no Power BI antes de usá-las nos seus modelos.
+- Calendário: altere `DataMin` para mudar o início.
+- Feriados: altere `AnoInicial` e `AnoFinal` no começo do arquivo.
+- Períodos: a classificação segue `0–5` Madrugada, `6–11` Manhã, `12–17` Tarde e `18–23` Noite.
