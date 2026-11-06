@@ -12,6 +12,6 @@
                 else if _ = 1 then 10
                 else if _ = 2 then 20
                 else if _ = 3 then 30
-                else null // Se o valor não for localizado, mantem o valor original
+                else _ // Se o valor não for localizado, mantem o valor original
         }
     )
