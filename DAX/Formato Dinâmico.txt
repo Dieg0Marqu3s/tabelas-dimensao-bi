@@ -1,0 +1,13 @@
+VAR Valor = SELECTEDMEASURE()
+VAR TotalSegundos = ROUND(Valor, 0)
+VAR Horas = INT(TotalSegundos / 3600)
+VAR Minutos = INT(MOD(TotalSegundos, 3600) / 60)
+VAR Segundos = MOD(TotalSegundos, 60)
+RETURN
+    IF(
+        ISBLANK(Valor),
+        "General",
+        """" & FORMAT(Horas, "00")
+            & ":" & FORMAT(Minutos, "00")
+            & ":" & FORMAT(Segundos, "00") & """"
+    )
